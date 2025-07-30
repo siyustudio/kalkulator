@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Kalkulator</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="judul">Kalkulator</div>
+        <div class="canvas">
+            <input type="text" id="layar" readonly>
+        </div>
+        <div class="number">
+            <button class="simbol" onclick="hapus()">C</button>
+      <button class="simbol" onclick="backspace()">⌫</button>
+      <button class="simbol" onclick="tekan('%')">%</button>
+      <button class="simbol" onclick="tekan('÷')">÷</button>
+
+      <button class="tombol" onclick="tekan('7')">7</button>
+      <button class="tombol" onclick="tekan('8')">8</button>
+      <button class="tombol" onclick="tekan('9')">9</button>
+      <button class="simbol" onclick="tekan('×')">×</button>
+
+      <button class="tombol" onclick="tekan('4')">4</button>
+      <button class="tombol" onclick="tekan('5')">5</button>
+      <button class="tombol" onclick="tekan('6')">6</button>
+      <button class="simbol" onclick="tekan('-')">−</button>
+
+      <button class="tombol" onclick="tekan('1')">1</button>
+      <button class="tombol" onclick="tekan('2')">2</button>
+      <button class="tombol" onclick="tekan('3')">3</button>
+      <button class="simbol" onclick="tekan('+')">+</button>
+
+      <button class="tombol" onclick="tekan('0')">0</button>
+      <button class="simbol panjang" onclick="hitung()">=</button>
+      <button class="simbol" onclick="tekan('.')">.</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
