@@ -1,57 +1,80 @@
-let ekspresi = "";  // untuk dihitung eval()
-let tampilan = "";  // untuk ditampilkan ke layar
+let ekspresi = "";
+  let tampilan = "";
 
-function tekan(nilai) {
-  if (nilai === '%') {
-    ekspresi += '/100';
-    tampilan += '%';
-  } else if (nilai === '×') {
-    ekspresi += '*';
-    tampilan += '×';
-  } else if (nilai === '÷') {
-    ekspresi += '/';
-    tampilan += '÷';
-  } else {
-    ekspresi += nilai;
-    tampilan += nilai;
+  function formatRibuan(angka) {
+    if (!angka) return "";
+    return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   }
 
-  document.getElementById("layar").value = tampilan;
-}
+  function formatCampuran(exp) {
+    const tokens = exp.match(/(\d+|\D)/g);
+    if (!tokens) return "";
+    return tokens.map(token => {
+      if (/^\d+$/.test(token)) {
+        return formatRibuan(token);
+      } else if (token === "*") {
+        return "×";
+      } else if (token === "/") {
+        return "÷";
+      } else {
+        return token;
+      }
+    }).join("");
+  }
 
-function hitung() {
-  try {
-    const hasil = eval(ekspresi);
-    document.getElementById("layar").value = hasil;
-    ekspresi = hasil.toString();
-    tampilan = ekspresi;
-  } catch (e) {
-    document.getElementById("layar").value = "Error";
+  function tekan(nilai) {
+    if (nilai === '×') {
+      ekspresi += '*';
+    } else if (nilai === '÷') {
+      ekspresi += '/';
+    } else if (nilai === ',') {
+      ekspresi += '.';
+    } else if (nilai === '%') {
+      ekspresi += '/100';
+    } else {
+      ekspresi += nilai;
+    }
+
+    tampilan = formatCampuran(ekspresi);
+    document.getElementById("layar").value = tampilan;
+  }
+
+  function backspace() {
+    ekspresi = ekspresi.slice(0, -1);
+    tampilan = formatCampuran(ekspresi);
+    document.getElementById("layar").value = tampilan;
+  }
+
+  function hapus() {
     ekspresi = "";
     tampilan = "";
+    document.getElementById("layar").value = "";
   }
-}
 
-function hapus() {
-  ekspresi = "";
-  tampilan = "";
-  document.getElementById("layar").value = "";
-}
+  function hitung() {
+    try {
+      const hasil = eval(ekspresi);
+      const hasilFormat = new Intl.NumberFormat('id-ID').format(hasil);
+      document.getElementById("layar").value = hasilFormat;
+      ekspresi = hasil.toString();
+      tampilan = hasilFormat;
+    } catch {
+      document.getElementById("layar").value = "Error";
+      ekspresi = "";
+      tampilan = "";
+    }
+  }
 
-function backspace() {
-  // Hapus 1 karakter terakhir dari ekspresi dan tampilan
-  ekspresi = ekspresi.slice(0, -1);
-  tampilan = tampilan.slice(0, -1);
-  document.getElementById("layar").value = tampilan;
-}
-
-document.addEventListener("keydown", function(event) {
+document.addEventListener("keydown", function (event) {
   const key = event.key;
 
   // Angka dan titik
-  if (!isNaN(key) || key === ".") {
-    tekan(key);
-  }
+  if (!isNaN(key)) {
+  tekan(key);
+} else if (key === ",") {
+  tekan(",");
+}
+
 
   // Operator
   else if (key === "+") {
@@ -64,6 +87,8 @@ document.addEventListener("keydown", function(event) {
     tekan("÷"); // tampil ÷, hitung /
   } else if (key === "%") {
     tekan("%");
+  } else if (key === ",") {
+    tekan(",")
   }
 
   // Enter = hitung
