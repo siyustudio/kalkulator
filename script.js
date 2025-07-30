@@ -81,4 +81,3 @@ document.addEventListener("keydown", function(event) {
     hapus();
   }
 });
-
